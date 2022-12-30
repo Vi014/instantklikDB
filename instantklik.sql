@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Dec 29, 2022 at 05:36 PM
+-- Generation Time: Dec 30, 2022 at 11:47 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -30,16 +30,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `korisnik` (
   `KorisnikID` int(10) NOT NULL,
   `Username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `avatar` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `korisnik`
 --
 
-INSERT INTO `korisnik` (`KorisnikID`, `Username`, `password`) VALUES
-(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue'),
-(2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue');
+INSERT INTO `korisnik` (`KorisnikID`, `Username`, `password`, `avatar`) VALUES
+(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', NULL),
+(2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', NULL),
+(25, 'test', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', NULL);
 
 -- --------------------------------------------------------
 
@@ -120,7 +122,7 @@ ALTER TABLE `tipnaloga`
 -- AUTO_INCREMENT for table `korisnik`
 --
 ALTER TABLE `korisnik`
-  MODIFY `KorisnikID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `KorisnikID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `nalog`
