@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Dec 30, 2022 at 11:47 PM
+-- Generation Time: Dec 31, 2022 at 09:56 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -39,7 +39,7 @@ CREATE TABLE `korisnik` (
 --
 
 INSERT INTO `korisnik` (`KorisnikID`, `Username`, `password`, `avatar`) VALUES
-(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', NULL),
+(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', '5978.jpg'),
 (2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', NULL),
 (25, 'test', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', NULL);
 
