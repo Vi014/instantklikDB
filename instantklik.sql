@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Dec 31, 2022 at 09:56 PM
+-- Generation Time: Jan 01, 2023 at 11:52 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -24,128 +24,141 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `korisnik`
+-- Table structure for table `linkedaccount`
 --
 
-CREATE TABLE `korisnik` (
-  `KorisnikID` int(10) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `avatar` varchar(10) DEFAULT NULL
+CREATE TABLE `linkedaccount` (
+  `accountID` int(10) NOT NULL,
+  `userID` int(10) NOT NULL,
+  `typeID` int(10) NOT NULL,
+  `link` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `korisnik`
+-- Dumping data for table `linkedaccount`
 --
 
-INSERT INTO `korisnik` (`KorisnikID`, `Username`, `password`, `avatar`) VALUES
-(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', '5978.jpg'),
-(2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', NULL),
-(25, 'test', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', NULL);
+INSERT INTO `linkedaccount` (`accountID`, `userID`, `typeID`, `link`) VALUES
+(1, 1, 2, 'https://www.instagram.com/duolingo'),
+(2, 1, 4, 'https://www.tiktok.com/@duolingo'),
+(3, 2, 1, 'https://www.facebook.com/Meta'),
+(4, 2, 2, 'https://twitter.com/Meta'),
+(5, 2, 3, 'https://www.instagram.com/meta/');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nalog`
+-- Table structure for table `linkedtype`
 --
 
-CREATE TABLE `nalog` (
-  `KorisnikID` int(10) NOT NULL,
-  `TipID` int(10) NOT NULL,
-  `Link` varchar(50) NOT NULL,
-  `NalogID` int(10) NOT NULL
+CREATE TABLE `linkedtype` (
+  `typeID` int(10) NOT NULL,
+  `typeName` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `nalog`
+-- Dumping data for table `linkedtype`
 --
 
-INSERT INTO `nalog` (`KorisnikID`, `TipID`, `Link`, `NalogID`) VALUES
-(1, 3, 'https://www.instagram.com/duolingo', 3),
-(1, 4, 'https://www.tiktok.com/@duolingo', 4),
-(2, 1, 'https://www.facebook.com/Meta', 5),
-(2, 2, 'https://twitter.com/Meta', 6),
-(2, 3, 'https://www.instagram.com/meta/', 7);
+INSERT INTO `linkedtype` (`typeID`, `typeName`) VALUES
+(1, 'Facebook'),
+(11, 'GitHub'),
+(2, 'Instagram'),
+(5, 'LinkedIn'),
+(13, 'Other'),
+(12, 'PayPal'),
+(6, 'Reddit'),
+(10, 'Spotify'),
+(9, 'Steam'),
+(4, 'TikTok'),
+(8, 'Twitch'),
+(3, 'Twitter'),
+(7, 'YouTube');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tipnaloga`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `tipnaloga` (
-  `TipID` int(10) NOT NULL,
-  `ImeTipa` varchar(20) NOT NULL,
-  `Slika` varchar(50) DEFAULT NULL
+CREATE TABLE `user` (
+  `userID` int(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `displayName` varchar(50) NOT NULL,
+  `avatar` varchar(10) DEFAULT NULL,
+  `banned` tinyint(1) NOT NULL DEFAULT 0,
+  `administrator` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tipnaloga`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `tipnaloga` (`TipID`, `ImeTipa`, `Slika`) VALUES
-(1, 'facebook', 'images/sites/facebook.png'),
-(2, 'twitter', 'images/sites/twitter.png'),
-(3, 'instagram', 'images/sites/instagram.png'),
-(4, 'tiktok', 'images/sites/tiktok.png');
+INSERT INTO `user` (`userID`, `username`, `password`, `displayName`, `avatar`, `banned`, `administrator`) VALUES
+(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', 'Duolingo', '5978.jpg', 0, 0),
+(2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', 'Meta', NULL, 0, 0),
+(3, 'test', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', 'foobar', NULL, 0, 0),
+(4, 'admin', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', 'admin', NULL, 0, 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `korisnik`
+-- Indexes for table `linkedaccount`
 --
-ALTER TABLE `korisnik`
-  ADD PRIMARY KEY (`KorisnikID`),
-  ADD UNIQUE KEY `Username` (`Username`);
+ALTER TABLE `linkedaccount`
+  ADD PRIMARY KEY (`accountID`),
+  ADD KEY `FK_account_user` (`userID`),
+  ADD KEY `FK_account_type` (`typeID`);
 
 --
--- Indexes for table `nalog`
+-- Indexes for table `linkedtype`
 --
-ALTER TABLE `nalog`
-  ADD PRIMARY KEY (`NalogID`),
-  ADD KEY `nalog_korisnik_fk` (`KorisnikID`),
-  ADD KEY `nalog_tip_fk` (`TipID`);
+ALTER TABLE `linkedtype`
+  ADD PRIMARY KEY (`typeID`),
+  ADD UNIQUE KEY `typeName` (`typeName`);
 
 --
--- Indexes for table `tipnaloga`
+-- Indexes for table `user`
 --
-ALTER TABLE `tipnaloga`
-  ADD PRIMARY KEY (`TipID`);
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`userID`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `korisnik`
+-- AUTO_INCREMENT for table `linkedaccount`
 --
-ALTER TABLE `korisnik`
-  MODIFY `KorisnikID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+ALTER TABLE `linkedaccount`
+  MODIFY `accountID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `nalog`
+-- AUTO_INCREMENT for table `linkedtype`
 --
-ALTER TABLE `nalog`
-  MODIFY `NalogID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+ALTER TABLE `linkedtype`
+  MODIFY `typeID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `tipnaloga`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `tipnaloga`
-  MODIFY `TipID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `user`
+  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `nalog`
+-- Constraints for table `linkedaccount`
 --
-ALTER TABLE `nalog`
-  ADD CONSTRAINT `nalog_korisnik_fk` FOREIGN KEY (`KorisnikID`) REFERENCES `korisnik` (`KorisnikID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `nalog_tip_fk` FOREIGN KEY (`TipID`) REFERENCES `tipnaloga` (`TipID`) ON DELETE CASCADE;
+ALTER TABLE `linkedaccount`
+  ADD CONSTRAINT `FK_account_type` FOREIGN KEY (`typeID`) REFERENCES `linkedtype` (`typeID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_account_user` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
