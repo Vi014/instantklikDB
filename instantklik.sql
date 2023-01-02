@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 01, 2023 at 11:52 PM
+-- Generation Time: Jan 02, 2023 at 10:31 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -24,21 +24,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `linkedaccount`
+-- Table structure for table `link`
 --
 
-CREATE TABLE `linkedaccount` (
-  `accountID` int(10) NOT NULL,
-  `userID` int(10) NOT NULL,
-  `typeID` int(10) NOT NULL,
-  `link` varchar(50) NOT NULL
+CREATE TABLE `link` (
+  `linkID` int(10) NOT NULL,
+  `profileID` int(10) NOT NULL,
+  `siteID` int(10) NOT NULL,
+  `content` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `linkedaccount`
+-- Dumping data for table `link`
 --
 
-INSERT INTO `linkedaccount` (`accountID`, `userID`, `typeID`, `link`) VALUES
+INSERT INTO `link` (`linkID`, `profileID`, `siteID`, `content`) VALUES
 (1, 1, 2, 'https://www.instagram.com/duolingo'),
 (2, 1, 4, 'https://www.tiktok.com/@duolingo'),
 (3, 2, 1, 'https://www.facebook.com/Meta'),
@@ -48,19 +48,45 @@ INSERT INTO `linkedaccount` (`accountID`, `userID`, `typeID`, `link`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `linkedtype`
+-- Table structure for table `profile`
 --
 
-CREATE TABLE `linkedtype` (
-  `typeID` int(10) NOT NULL,
-  `typeName` varchar(20) NOT NULL
+CREATE TABLE `profile` (
+  `profileID` int(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `displayName` varchar(50) NOT NULL,
+  `avatar` varchar(10) DEFAULT NULL,
+  `banned` tinyint(1) NOT NULL DEFAULT 0,
+  `administrator` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `linkedtype`
+-- Dumping data for table `profile`
 --
 
-INSERT INTO `linkedtype` (`typeID`, `typeName`) VALUES
+INSERT INTO `profile` (`profileID`, `username`, `password`, `displayName`, `avatar`, `banned`, `administrator`) VALUES
+(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', 'Duolingo', '5978.jpg', 0, 0),
+(2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', 'Meta', NULL, 0, 0),
+(3, 'test', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', 'foobar', NULL, 0, 0),
+(4, 'admin', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', 'admin', NULL, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site`
+--
+
+CREATE TABLE `site` (
+  `siteID` int(10) NOT NULL,
+  `siteName` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site`
+--
+
+INSERT INTO `site` (`siteID`, `siteName`) VALUES
 (1, 'Facebook'),
 (11, 'GitHub'),
 (2, 'Instagram'),
@@ -75,90 +101,64 @@ INSERT INTO `linkedtype` (`typeID`, `typeName`) VALUES
 (3, 'Twitter'),
 (7, 'YouTube');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `userID` int(10) NOT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `displayName` varchar(50) NOT NULL,
-  `avatar` varchar(10) DEFAULT NULL,
-  `banned` tinyint(1) NOT NULL DEFAULT 0,
-  `administrator` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`userID`, `username`, `password`, `displayName`, `avatar`, `banned`, `administrator`) VALUES
-(1, 'duolingo', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', 'Duolingo', '5978.jpg', 0, 0),
-(2, 'meta', '$2y$10$/ZC4AZgvW6rkD6XTFlsr2uvBamZejCJjxO38FkI37qETWkuLtIcue', 'Meta', NULL, 0, 0),
-(3, 'test', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', 'foobar', NULL, 0, 0),
-(4, 'admin', '$2y$10$fLfvEg.mTUMCEqtShnwMaeAFJ4rbPePu9Rfgh0C3x4ladCdG2PMiy', 'admin', NULL, 0, 1);
-
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `linkedaccount`
+-- Indexes for table `link`
 --
-ALTER TABLE `linkedaccount`
-  ADD PRIMARY KEY (`accountID`),
-  ADD KEY `FK_account_user` (`userID`),
-  ADD KEY `FK_account_type` (`typeID`);
+ALTER TABLE `link`
+  ADD PRIMARY KEY (`linkID`),
+  ADD KEY `FK_link_profile` (`profileID`),
+  ADD KEY `FK_link_site` (`siteID`);
 
 --
--- Indexes for table `linkedtype`
+-- Indexes for table `profile`
 --
-ALTER TABLE `linkedtype`
-  ADD PRIMARY KEY (`typeID`),
-  ADD UNIQUE KEY `typeName` (`typeName`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`userID`),
+ALTER TABLE `profile`
+  ADD PRIMARY KEY (`profileID`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `site`
+--
+ALTER TABLE `site`
+  ADD PRIMARY KEY (`siteID`),
+  ADD UNIQUE KEY `siteName` (`siteName`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `linkedaccount`
+-- AUTO_INCREMENT for table `link`
 --
-ALTER TABLE `linkedaccount`
-  MODIFY `accountID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `link`
+  MODIFY `linkID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `linkedtype`
+-- AUTO_INCREMENT for table `profile`
 --
-ALTER TABLE `linkedtype`
-  MODIFY `typeID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+ALTER TABLE `profile`
+  MODIFY `profileID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `site`
 --
-ALTER TABLE `user`
-  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `site`
+  MODIFY `siteID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `linkedaccount`
+-- Constraints for table `link`
 --
-ALTER TABLE `linkedaccount`
-  ADD CONSTRAINT `FK_account_type` FOREIGN KEY (`typeID`) REFERENCES `linkedtype` (`typeID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_account_user` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE;
+ALTER TABLE `link`
+  ADD CONSTRAINT `FK_link_profile` FOREIGN KEY (`profileID`) REFERENCES `profile` (`profileID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_link_site` FOREIGN KEY (`siteID`) REFERENCES `site` (`siteID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
